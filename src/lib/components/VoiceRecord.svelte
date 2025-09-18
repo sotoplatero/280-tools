@@ -1,13 +1,18 @@
 <script lang="ts">
-	import { Mic, Square, Copy, ExternalLink, CircleAlert } from '@lucide/svelte';
+	import { Mic, Square, CircleAlert } from '@lucide/svelte';
 	import { enhance } from '$app/forms';
-	import TweetDisplay from '$lib/components/TweetDisplay.svelte';
 
-	// Props - now optional since component is self-contained
+	// Props
 	let {
-		onRecordingComplete
+		onRecordingComplete,
+		onProcessingStart,
+		onProcessingComplete,
+		onError
 	}: {
 		onRecordingComplete?: (audioBlob: Blob) => void;
+		onProcessingStart?: () => void;
+		onProcessingComplete?: (result: { tweet: string; transcription?: string; characterCount: number }) => void;
+		onError?: (error: string) => void;
 	} = $props();
 
 	// Recording State
@@ -20,15 +25,10 @@
 	let analyser: AnalyserNode | null = $state(null);
 	let hasDetectedSound = $state(false);
 
-	// Processing and Results State
+	// Processing State
 	let isProcessing = $state(false);
 	let audioBlob: Blob | null = $state(null);
 	let formElement: HTMLFormElement | null = $state(null);
-	let error: string | null = $state(null);
-	let tweet: string | null = $state(null);
-	let transcription: string | null = $state(null);
-	let characterCount: number = $state(0);
-	let copied = $state(false);
 
 	const MAX_DURATION = 15; // 15 seconds
 
@@ -73,7 +73,7 @@
 				audioBlob = blob;
 				await handleRecordingComplete(blob);
 
-				// Also call parent callback if provided
+				// Call parent callback if provided
 				onRecordingComplete?.(blob);
 			};
 
@@ -93,6 +93,7 @@
 
 		} catch (error) {
 			console.error('Microphone error:', error);
+			onError?.('Microphone access denied. Please allow microphone permission and try again.');
 		}
 	}
 
@@ -134,12 +135,6 @@
 	}
 
 	async function handleRecordingComplete(blob: Blob) {
-		// Reset previous results
-		error = null;
-		tweet = null;
-		transcription = null;
-		characterCount = 0;
-
 		// Create and submit form data directly
 		if (formElement) {
 			// Create file input and set the blob
@@ -161,62 +156,27 @@
 
 		if (result.type === 'success' && result.data) {
 			if (result.data.success && result.data.tweet) {
-				tweet = result.data.tweet;
-				transcription = result.data.transcription || null;
-				characterCount = result.data.characterCount || 0;
-				error = null;
+				const processedResult = {
+					tweet: result.data.tweet,
+					transcription: result.data.transcription || undefined,
+					characterCount: result.data.characterCount || 0
+				};
+				onProcessingComplete?.(processedResult);
 			} else if (result.data.error) {
-				error = result.data.error;
-				tweet = null;
-				transcription = null;
-				characterCount = 0;
+				onError?.(result.data.error);
 			}
 		} else if (result.type === 'failure') {
-			error = 'Failed to process audio. Please try again.';
-			tweet = null;
-			transcription = null;
-			characterCount = 0;
+			onError?.('Failed to process audio. Please try again.');
 		}
-	}
-
-	async function copyToClipboard() {
-		if (!tweet) return;
-
-		try {
-			await navigator.clipboard.writeText(tweet);
-			copied = true;
-			setTimeout(() => {
-				copied = false;
-			}, 2000);
-		} catch (error) {
-			console.error('Failed to copy:', error);
-		}
-	}
-
-	function openTwitterIntent() {
-		if (!tweet) return;
-
-		const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`;
-		window.open(url, '_blank');
-	}
-
-	function resetResults() {
-		tweet = null;
-		transcription = null;
-		characterCount = 0;
-		error = null;
-		audioBlob = null;
-		copied = false;
 	}
 </script>
 
-<div class="w-full">
+<div class="w-full ">
 	{#if isRecording}
 		<!-- Recording Mode - Full Screen with fade in effect -->
-		<div class="fixed inset-0 bg-base-content flex items-center justify-center z-50 animate-in fade-in duration-500">
+		<div class="fixed inset-0 flex items-center justify-center z-50 animate-in fade-in duration-500 bg-base-100">
 			<div class="text-center">
-				<div class="text-9xl font-mono mb-4 font-bold text-base-100">{formatCountdown(recordingTime)}</div>
-				<div class="text-xl mb-6 text-base-100">seconds remaining</div>
+				<div class="text-9xl font-mono mb-4 font-bold ">{formatCountdown(recordingTime)}</div>
 
 				<!-- Sound detection indicator -->
 				<div class="mb-8">
@@ -234,16 +194,16 @@
 				</div>
 
 				<!-- Stop Button positioned at bottom center -->
-				<div class="fixed bottom-20 left-1/2 transform -translate-x-1/2">
+				<div class="">
 					<button onclick={toggleRecording} class="btn btn-circle btn-xl btn-error relative">
-						<Square class="w-10 h-10" />
+						<Square class="fill-current" />
 					</button>
 				</div>
 			</div>
 		</div>
 	{:else}
 		<!-- Main Interface - Relative positioning for buttons within hero -->
-		<div class="relative">
+		<div class=" mb-8">
 			<!-- Processing indicator -->
 			{#if isProcessing}
 				<div class="text-center mb-8">
@@ -264,10 +224,11 @@
 		<form
 			bind:this={formElement}
 			method="POST"
-			action="/recorder?/generateTweet"
+			action="/?/generateTweet"
 			enctype="multipart/form-data"
 			use:enhance={() => {
 				isProcessing = true;
+				onProcessingStart?.();
 				return async ({ result, update }) => {
 					handleFormResult(result);
 					await update();
@@ -277,24 +238,5 @@
 		>
 			<input type="file" name="audio" accept="audio/*" required />
 		</form>
-
-		<!-- Results Section -->
-		{#if tweet}
-			<TweetDisplay {tweet} transcription={transcription || undefined} {characterCount} />
-		{/if}
-
-		<!-- Error Messages -->
-		{#if error}
-			<div role="alert" class="alert alert-error alert-soft mt-6">
-				<CircleAlert class="w-6 h-6 text-red-500 mr-2" />
-				<span>{error}</span>
-				<button
-					class="btn btn-xs btn-ghost ml-auto"
-					onclick={() => error = null}
-				>
-					Dismiss
-				</button>
-			</div>
-		{/if}
 	{/if}
 </div>

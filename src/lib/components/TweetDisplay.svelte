@@ -34,11 +34,11 @@
 
 <div class="space-y-6">
 	<!-- Generated Tweet -->
-	<div class="card bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/10 shadow">
+	<div class="card bg-base-200 shadow-md">
 		<div class="card-body">
 
 			<!-- Tweet Content -->
-			<p class="leading-relaxed text-gray-900 whitespace-pre-line">{tweet}</p>
+			<p class="leading-relaxed  whitespace-pre-line">{tweet}</p>
 
 			<!-- Character Count -->
 			<div class="flex justify-between items-center">
