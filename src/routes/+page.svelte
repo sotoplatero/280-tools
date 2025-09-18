@@ -24,9 +24,9 @@
 	}
 </script>
 
-<div class="min-h-screen bg-base-100">
+<div class="min-h-dvh bg-base-100">
 	<!-- Hero Section - Full screen -->
-	<div class="h-screen flex flex-col  justify-between max-w-2xl mx-auto p-8">
+	<div class="h-dvh flex flex-col  justify-between max-w-2xl mx-auto p-8">
 		<div></div> <!-- Spacer for top -->
 
 		<div class="text-center">
