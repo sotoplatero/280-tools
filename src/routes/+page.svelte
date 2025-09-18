@@ -33,7 +33,7 @@
 			<h1 class="text-4xl font-extrabold mb-2">Tap. Talk. Share</h1>
 			<p class="text-base-content/70 text-lg">Turn your voice into posts on X instantly.</p>
             <!-- Results section below hero -->
-            <div class="max-w-2xl mx-auto w-full mt-8 ">
+            <div class="max-w-xl mx-auto w-full mt-8 ">
                 <!-- Results -->
                 {#if tweet}
                     <TweetDisplay {tweet} {transcription} {characterCount} />

@@ -35,7 +35,7 @@
 <div class="space-y-6">
 	<!-- Generated Tweet -->
 	<div class="card bg-base-200 shadow-md">
-		<div class="card-body">
+		<div class="card-body text-left">
 
 			<!-- Tweet Content -->
 			<p class="leading-relaxed  whitespace-pre-line">{tweet}</p>
@@ -43,14 +43,14 @@
 			<!-- Character Count -->
 			<div class="flex justify-between items-center">
 				<div class="text-sm text-gray-500">
-					{characterCount}/280 characters
+					{characterCount}/280 
 				</div>
 			</div>
 
 			<!-- Actions -->
-			<div class="card-actions justify-end">
+			<div class="card-actions justify-center mt-4 space-x-4">
 				<button
-					class="btn btn-outline btn-sm gap-2"
+					class="btn btn-ghost btn-sm gap-2"
 					onclick={copyToClipboard}
 					class:btn-success={copied}
 					disabled={copied}
