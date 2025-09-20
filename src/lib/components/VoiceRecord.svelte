@@ -214,7 +214,7 @@
 
 			<!-- Record Button positioned at bottom of hero section -->
 			<div class="text-center">
-				<button onclick={toggleRecording} class="btn btn-circle btn-xl btn-primary record-button">
+				<button onclick={toggleRecording} class="btn btn-circle btn-xl p-4 btn-primary  mic">
 					<Mic class="w-6 h-6 relative z-10" />
 				</button>
 			</div>
