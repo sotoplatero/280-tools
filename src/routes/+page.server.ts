@@ -22,18 +22,19 @@ export const actions: Actions = {
 				return fail(400, { error: 'No audio file provided' });
 			}
 
-			// Step 1: Transcribe audio using Whisper
+			// Step 1: Transcribe audio using Whisper with language detection
 			console.log('Transcribing audio...');
 			const transcription = await openai.audio.transcriptions.create({
 				file: audioFile,
 				model: 'whisper-1',
-				response_format: 'text'
+				response_format: 'verbose_json'
 			});
 
 			console.log('Transcription:', transcription);
 
-			// Validate transcription content
-			const transcriptText = transcription.toString().trim();
+			// Extract text and language from transcription response
+			const transcriptText = transcription.text.trim();
+			const detectedLanguage = transcription.language;
 			if (!transcriptText || transcriptText.length < 5) {
 				return fail(400, {
 					error: 'No speech detected in the recording. Please speak clearly and try again.',
@@ -64,11 +65,11 @@ export const actions: Actions = {
 				messages: [
 					{
 						role: 'system',
-						content: promptForTweet
+						content: promptForTweet(detectedLanguage)
 					},
 					{
 						role: 'user',
-						content: `Transcription: "${transcription}"`
+						content: `Transcription: "${transcriptText}"`
 					}
 				],
 				max_tokens: 100,
@@ -84,7 +85,8 @@ export const actions: Actions = {
 				success: true,
 				transcription: transcriptText,
 				tweet: tweet,
-				characterCount: tweet.length
+				characterCount: tweet.length,
+				detectedLanguage: detectedLanguage
 			};
 
 		} catch (error) {

@@ -60,3 +60,33 @@
 .record-button:hover::before {
   opacity: 1;
 }
+
+/* Animation delay utilities */
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-400 {
+  animation-delay: 400ms;
+}
+
+/* Custom pulse animation - Animate.css style */
+@keyframes pulseAnimateCSS {
+  0% {
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    transform: scale3d(1.05, 1.05, 1.05);
+  }
+  100% {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+.animate-pulse-css {
+  animation: pulseAnimateCSS 2s ease-in-out infinite;
+}
+
+.animate-pulse-css * {
+  animation: inherit;
+}

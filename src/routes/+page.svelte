@@ -30,9 +30,8 @@
 		<div></div> <!-- Spacer for top -->
 
 		<div class="text-center">
-			<div class="text-2xl font-bold flex items-center justify-center mb-4"> 
-				<img src="/logo.png" class="size-8" alt="Vozwi Logo"> 
-				<span>vozwi</span>
+			<div class="text-2xl font-semibold flex items-center justify-center mb-4"> 
+				<span>rooster<span class="text-4xl text-pink-500">.</span>social</span>
 			</div>
 			<h1 class="text-4xl font-extrabold mb-2">Tap. Talk. Share</h1>
 			<p class="text-base-content/70 text-lg">Turn your voice into posts on X instantly.</p>

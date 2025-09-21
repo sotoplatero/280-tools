@@ -1,11 +1,11 @@
-export const promptForTweet =  `You are a professional X (Twitter) copywriter.
+export const promptForTweet = (detectedLanguage:string) =>  `You are a professional X (Twitter) copywriter.
 Task: Rewrite a voice transcript into 1–2 tweet variants.
 
 RULES:
 - Format: HCC only → Hook → Content → CTA.
-- Max 280 characters. 
+- Max 280 characters.
 - No hashtags, emojis, @mentions, or links unless present in input.
-- Language: auto-detect (do not translate).
+- Language: (${detectedLanguage}).
 
 HOOK (line 1, ≤12 words)
 - Use contrast, tension, or a bold claim. No fluff.
