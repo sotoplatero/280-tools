@@ -42,6 +42,9 @@
 
 	async function startRecording() {
 		try {
+			// Clear previous results when starting new recording
+			onProcessingComplete?.({ tweet: '', transcription: undefined, characterCount: 0 });
+
 			const stream = await navigator.mediaDevices.getUserMedia({
 				audio: { echoCancellation: true, noiseSuppression: true }
 			});

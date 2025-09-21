@@ -10,10 +10,19 @@
 	let error: string | null = $state(null);
 
 	function handleProcessingComplete(result: { tweet: string; transcription?: string; characterCount: number }) {
-		tweet = result.tweet;
-		transcription = result.transcription;
-		characterCount = result.characterCount;
-		error = null;
+		// Only update if we have a valid tweet (not empty string for clearing)
+		if (result.tweet) {
+			tweet = result.tweet;
+			transcription = result.transcription;
+			characterCount = result.characterCount;
+			error = null;
+		} else {
+			// Clear results when empty tweet is passed
+			tweet = null;
+			transcription = undefined;
+			characterCount = 0;
+			error = null;
+		}
 	}
 
 	function handleError(errorMessage: string) {
