@@ -31,7 +31,7 @@
 
 		<div class="text-center">
 			<div class="text-2xl font-semibold flex items-center justify-center mb-4"> 
-				<span>rooster<span class="text-4xl text-pink-500">.</span>social</span>
+				<span>rooster<span class="text-4xl text-red-500">.</span>social</span>
 			</div>
 			<h1 class="text-4xl font-extrabold mb-2">Tap. Talk. Share</h1>
 			<p class="text-base-content/70 text-lg">Turn your voice into posts on X instantly.</p>
