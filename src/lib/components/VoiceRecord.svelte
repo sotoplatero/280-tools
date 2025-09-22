@@ -217,7 +217,7 @@
 
 			<!-- Record Button positioned at bottom of hero section -->
 			<div class="text-center">
-				<button onclick={toggleRecording} class="btn btn-circle btn-xl p-4 btn-primary animate-pulse-css hover:scale-105 transition-all duration-300 ease-out">
+				<button onclick={toggleRecording} data-umami-event="record_button" class="btn btn-circle btn-xl p-4 btn-primary animate-pulse-css hover:scale-105 transition-all duration-300 ease-out">
 					<Mic class="w-6 h-6" />
 				</button>
 			</div>

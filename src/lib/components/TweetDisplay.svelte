@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Copy, ExternalLink, Twitter } from '@lucide/svelte';
+	import { Copy, ExternalLink, Twitter, Send } from '@lucide/svelte';
 
 	// Props
 	let {
@@ -27,7 +27,7 @@
 	}
 
 	function openTwitterIntent() {
-		const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`;
+		const url = `https://x.com/intent/tweet?text=${encodeURIComponent(tweet)}`;
 		window.open(url, '_blank');
 	}
 </script>
@@ -71,7 +71,7 @@
 				</button>
 
 				<button class="btn btn-primary btn-sm gap-2" onclick={openTwitterIntent}>
-					<ExternalLink class="w-4 h-4" />
+					<Send class="w-4 h-4" />
 					Post to X
 				</button>
 			</div>
