@@ -42,8 +42,8 @@
 			<div class="text-2xl font-semibold flex items-center justify-center mb-4"> 
 				<span>rooster<span class="text-4xl text-red-500">.</span>social</span>
 			</div>
-			<h1 class="text-4xl font-extrabold mb-2">Tell me what’s happening</h1>
-			<p class="text-base-content/80 text-xl">I write a post/tweet for you. </p>
+			<h1 class="text-5xl font-extrabold mb-2">Talk. Tweet. Done.</h1>
+			<p class="text-base-content/80 text-2xl">Say what’s on your mind and get a tweet in seconds. No typing, no effort.</p>
             <!-- Results section below hero -->
             <div class="max-w-xl mx-auto w-full mt-8 ">
                 <!-- Results -->
